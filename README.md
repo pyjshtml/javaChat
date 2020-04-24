@@ -1,5 +1,5 @@
 # javaEmail
-This is my email server using java
+This is my email [server]("http://localhost") using java
 
 *Goto* command line (**cmd**) and write
 >`javac Main.java`
