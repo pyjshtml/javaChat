@@ -1,14 +1,11 @@
 import sources.*;
 import java.util.*;
 class Test{
+  protected static Map<String, String> env = System.getenv();
+  public static final String dbLoc = env.get("dbLocation");
+  public static Database db = new Database(dbLoc);
   public static void main(String[] args) {
-    Database db = new Database("./data.txt");
-    // Map<String, String> data = new HashMap<>();
-    // data.put("age","14");
-    // data.put("Occupation","Student");
-    // db.insert(data);
-    Map<String, String> myQuery = new HashMap<>();
-    myQuery.put("id","1");
-    System.out.println(db.find(myQuery));
+    System.out.println(env);
+    System.out.println(db.read());
   }
 }

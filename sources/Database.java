@@ -63,6 +63,9 @@ public class Database{
     return this.read().length() == 0;
   }
   public ArrayList<Map<String, String>> find(){
+    if(this.isEmpty()){
+      return new ArrayList<Map<String, String>>();
+    }
     String text = this.read();
     StringBuilder sb = new StringBuilder(text).deleteCharAt(text.lastIndexOf("}"));
     while(sb.indexOf("{") >= 0){
@@ -78,7 +81,7 @@ public class Database{
     }
     return content;
   }
-  public ArrayList<Map<String, String>> find(Map<String, String> query){
+  public ArrayList<Map<String, String>> find(Map<String, String> query) throws Exception{
     ArrayList<Map<String, String>> content = this.find();
     ArrayList<Map<String, String>> res = new ArrayList<>();
     for(Map<String, String> map : content){
