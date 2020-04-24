@@ -18,6 +18,13 @@ public class Security{
     }
     return res;
   }
+  public static String hash(String input, boolean useSalt){
+    if(useSalt==true){
+      return hash(input);
+    } else {
+      return hash(input,"");
+    }
+  }
   public static String hash(String input, String salt){
     String res = "Error";
     try{
