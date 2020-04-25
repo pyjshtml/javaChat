@@ -2,11 +2,17 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=no'>
     <title>Homepage</title>
     <link rel="stylesheet" type="text/css" href="/static/css/navbar.css">
     <script src="/static/js/format.js" charset="utf-8"></script>
+    <!-- <link rel="stylesheet/less" type='text/css' href="/static/less/style.less"> -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/3.9.0/less.min.js" ></script>
   </head>
   <body>
+    <div class="content">
+      <p>Hello</p>
+    </div>
     <nav class='navbar'>
       <ul>
         <li>
@@ -14,6 +20,13 @@
         </li>
         <li>
           <a href="/aboutus">About Us</a>
+        </li>
+        <li class="dropdown">
+          <a href="javascript:void(0)" class="dropbtn">Chat</a>
+          <div class="dropdown-content">
+            <a href="/join">Join</a>
+            <a href="/create">Create</a>
+          </div>
         </li>
         <li class='rt'>
           <a href="/register">Register</a>
@@ -23,8 +36,5 @@
         </li>
       </ul>
     </nav>
-    <div class="content">
-      <p>Hello</p>
-    </div>
   </body>
 </html>
