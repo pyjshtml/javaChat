@@ -1,6 +1,7 @@
 package sources;
 import java.math.*;
 import java.security.*;
+import java.util.*;
 import java.nio.charset.StandardCharsets;
 public class Security{
   public static final String salt = "cQwMKtTyEr";
@@ -38,6 +39,11 @@ public class Security{
       e.printStackTrace();
     }
     return res;
+  }
+  public static String webKey(String input) throws Exception{
+    MessageDigest md = MessageDigest.getInstance("SHA-1");
+    byte[] ninp = md.digest(input.concat("258EAFA5-E914-47DA-95CA-C5AB0DC85B11").getBytes("utf-8"));
+    return Base64.getUrlEncoder().encodeToString(ninp).replaceAll("_","/").replaceAll("\\-","+");
   }
   public static boolean compare(String unhashed, String hash){
     return hash(unhashed).equals(hash);

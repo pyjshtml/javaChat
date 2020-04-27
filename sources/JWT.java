@@ -7,7 +7,7 @@ import java.util.*;
 public class JWT{
   public String token = "";
   public static String encode(String text) throws Exception{
-    return Base64.getUrlEncoder().withoutPadding().encodeToString(text.getBytes("utf-8"));
+    return Base64.getUrlEncoder().encodeToString(text.getBytes("utf-8"));
   }
   public static String decode(String text) throws Exception{
     return new String(Base64.getUrlDecoder().decode(text),StandardCharsets.UTF_8);

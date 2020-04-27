@@ -5,7 +5,14 @@
     <title>Websocket test</title>
     <script type="text/javascript">
       window.onload = function(){
-
+        const socket = new WebSocket("ws://localhost/socket");
+        socket.onopen = function(){
+          console.log("Connection opened");
+          // socket.send("Hi");
+        }
+        socket.onerror = function(){
+          console.log("Error");
+        }
       }
     </script>
   </head>

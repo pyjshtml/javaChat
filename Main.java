@@ -81,13 +81,14 @@ class Main{
         System.out.println("Incoming request");
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         String line;
-        ArrayList<String> headers = new ArrayList<>();
+        Map<String, String> headers = new HashMap<>();
         String headerString = "";
         while((line = in.readLine()) != null && line.length() != 0){
-          headers.add(line);
+          if(contains(line,": ")){
+            headers.put(line.split(": ")[0],line.split(": ")[1]);
+          }
           headerString += line+"\r\n";
         }
-        System.out.println(("header received"));
         int index = headerString.indexOf(" ");
         if(index == -1){
           System.out.println("Bad index");
@@ -120,8 +121,8 @@ class Main{
         /*Define Cookies*/
         Map<String, String> cookies = new HashMap<>();
         for(int i = 0; i < headers.size(); i++){
-          if(headers.get(i).indexOf("Cookie:")==0){
-            for(String cookie : headers.get(i).substring(8).split("; ")){
+          if(headers.containsKey("Cookie")){
+            for(String cookie : headers.get("Cookie").split("; ")){
               cookies.put(cookie.split("=")[0],cookie.split("=")[1]);
             }
           }
@@ -179,6 +180,32 @@ class Main{
           } else if (contains(path,"/completed")){
             output.write(String.join("\r\n",responseHeaders).concat("\r\n\r\n").concat("Data received").getBytes("utf-8"));
             socket.close();
+          } else if (path.equals("/join")){
+            output.write(String.join("\r\n",responseHeaders).concat("\r\n\r\n").concat(read("./sites/socket.html")).getBytes("utf-8"));
+            socket.close();
+          } else if (contains(path,"/socket")){
+            System.out.println("Sockety stuff");
+            if(headers.containsKey("Sec-WebSocket-Key")){
+              System.out.println("Contains Key");
+              System.out.println(headers.get("Sec-WebSocket-Key"));
+              responseHeaders.clear();
+              String cHead[] = {
+                "HTTP/1.1 101 Switching Protocols",
+                "Upgrade: websocket",
+                "Connection: Upgrade"
+              };
+              responseHeaders.addAll(Arrays.asList(cHead));
+              responseHeaders.add("Sec-WebSocket-Accept: ".concat(Security.webKey(headers.get("Sec-WebSocket-Key"))));
+              String res = String.join("\r\n",responseHeaders).concat("\r\n\r\n");
+              System.out.println(res);
+              output.write(res.getBytes("utf-8"));
+              socket.close();
+            } else {
+              System.out.println("Doesn't contains key");
+              System.out.println(headerString);
+              output.write(String.join("\r\n",responseHeaders).concat("\r\n\r\n").concat("Just a test").getBytes("utf-8"));
+              socket.close();
+            }
           } else {
             send(404,socket);
           }
@@ -240,7 +267,7 @@ class Main{
         e.printStackTrace();
         try {
           Socket socket = server.accept();
-          socket.getOutputStream().write("HTTP/1.1 500 Internal Server Error\r\nContent-Type:text/html; charset=utf-8\r\nConnection:close\r\n\r\nHello,World!".getBytes("utf-8"));
+          socket.getOutputStream().write("HTTP/1.1 500 Internal Server Error\r\nContent-Type:text/html; charset=utf-8\r\nConnection:close\r\n\r\nThere was an internal server error, Sorry".getBytes("utf-8"));
           socket.close();
         } catch(Exception e2){
           System.out.println("Kill me");
